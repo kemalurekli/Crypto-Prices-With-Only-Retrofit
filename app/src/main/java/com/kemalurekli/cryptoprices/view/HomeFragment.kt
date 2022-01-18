@@ -16,7 +16,7 @@ import com.kemalurekli.cryptoprices.viewModel.HomeFragmentViewModel
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel : HomeFragmentViewModel
-    val priceAdapter = RecyclerViewAdapter(arrayListOf())
+    private val priceAdapter = RecyclerViewAdapter(arrayListOf())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -35,6 +35,13 @@ class HomeFragment : Fragment() {
         binding.rV.adapter = priceAdapter
         binding.rV.layoutManager = GridLayoutManager(context, 2)
         binding.rV.setHasFixedSize(true)
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.rV.visibility = View.GONE
+            viewModel.refreshData()
+            binding.swipeRefreshLayout.isRefreshing = false
+            binding.rV.visibility = View.VISIBLE
+        }
     }
     private fun observeLiveData() {
         viewModel.prices.observe(viewLifecycleOwner, Observer { prices ->
