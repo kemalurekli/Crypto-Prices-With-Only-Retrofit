@@ -37,10 +37,10 @@ class HomeFragment : Fragment() {
         binding.rV.setHasFixedSize(true)
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            binding.rV.visibility = View.GONE
+            //binding.rV.visibility = View.GONE
             viewModel.refreshData()
             binding.swipeRefreshLayout.isRefreshing = false
-            binding.rV.visibility = View.VISIBLE
+            //binding.rV.visibility = View.VISIBLE
         }
     }
     private fun observeLiveData() {
