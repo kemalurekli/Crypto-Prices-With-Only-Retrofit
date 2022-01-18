@@ -1,4 +1,4 @@
-# Crypto-Prices-With-Retrofit-Rxjava
+# Crypto-Prices-With-Retrofit
 ### The project was made with Retrofit, Navigation, ViewBinding, RecyclerView, LiveData, on MVVM architecture.
 #### Layouts : ConstraintLayout, Lineer Layout and SwipeRefreshLayout
 
