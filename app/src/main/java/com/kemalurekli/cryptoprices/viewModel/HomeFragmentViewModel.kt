@@ -10,9 +10,13 @@ import retrofit2.Response
 
 class HomeFragmentViewModel : ViewModel() {
     val prices = MutableLiveData<List<PricesModel>>()
+    val error = MutableLiveData<Boolean>()
+    val loading = MutableLiveData<Boolean>()
+
     private val priceAPIService = PriceAPIService()
 
     fun refreshData() {
+        loading.value = true
         priceAPIService.getPriceData().enqueue(object: Callback<List<PricesModel>> {
             override fun onResponse(
                 call: Call<List<PricesModel>>,
@@ -21,11 +25,14 @@ class HomeFragmentViewModel : ViewModel() {
                 if (response.isSuccessful){
                     response.body()?.let {
                         updateLiveData(it)
+                        loading.value = false
+                        error.value = false
                     }
                 }
             }
             override fun onFailure(call: Call<List<PricesModel>>, t: Throwable) {
                 t.printStackTrace()
+                error.value = true
             }
         })
     }

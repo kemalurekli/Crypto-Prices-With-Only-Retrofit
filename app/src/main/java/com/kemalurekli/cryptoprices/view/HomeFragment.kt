@@ -37,16 +37,42 @@ class HomeFragment : Fragment() {
         binding.rV.setHasFixedSize(true)
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            binding.rV.visibility = View.GONE
-            viewModel.refreshData()
             binding.swipeRefreshLayout.isRefreshing = false
-            binding.rV.visibility = View.VISIBLE
+            viewModel.refreshData()
         }
     }
     private fun observeLiveData() {
-        viewModel.prices.observe(viewLifecycleOwner, Observer { prices ->
-            prices?.let {
+        viewModel.prices.observe(viewLifecycleOwner, Observer { cryptoData ->
+            cryptoData?.let {
                 priceAdapter.updatePriceList(it)
+                binding.rV.visibility = View.VISIBLE
+                binding.pbLoading.visibility = View.GONE
+                binding.tvError.visibility = View.GONE
+            }
+        })
+        viewModel.error.observe(viewLifecycleOwner, Observer { cryptoError ->
+            cryptoError?.let {
+                if (it){
+                    binding.rV.visibility = View.GONE
+                    binding.pbLoading.visibility = View.GONE
+                    binding.tvError.visibility = View.VISIBLE
+
+                }else{
+                    binding.tvError.visibility = View.GONE
+
+                }
+            }
+        })
+        viewModel.loading.observe(viewLifecycleOwner, Observer { cryptoLoading ->
+            cryptoLoading?.let {
+                if (it){
+                    binding.rV.visibility = View.GONE
+                    binding.tvError.visibility = View.GONE
+                    binding.pbLoading.visibility = View.VISIBLE
+                }else{
+                    binding.pbLoading.visibility = View.GONE
+
+                }
             }
         })
     }
